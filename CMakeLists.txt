@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 4.1)
 project(Sample_project ASM_MASM)
 
-find_program(UASM_EXECUTABLE uasm32
+find_program(UASM_EXECUTABLE
+        NAMES uasm32 uasm
         PATHS "${CMAKE_SOURCE_DIR}/uasm257_x86"
+        "/msys64/mingw64/bin"
 )
 
 if (NOT UASM_EXECUTABLE)
@@ -18,7 +20,7 @@ if (NOT LLD_LINK_EXECUTABLE)
     message(FATAL_ERROR "lld-link not found. Please ensure it is in your system's PATH or located in C:/Program Files (x86)/LLVM/bin")
 endif ()
 
-set(CMAKE_ASM_MASM_FLAGS "/Zi8 /Fl /Sa -coff ")
+set(CMAKE_ASM_MASM_FLAGS "-Zi8 -Fl -Sa -coff")
 
 set(CMAKE_ASM_MASM_LINK_EXECUTABLE "\"${LLD_LINK_EXECUTABLE}\" <LINK_FLAGS> <OBJECTS> /OUT:<TARGET> <LINK_LIBRARIES>")
 

@@ -6,7 +6,7 @@ A sample project demonstrating how to build and debug a 32-bit assembly applicat
 
 This project requires the following dependencies to be installed and available in your system's PATH, if possible choose x86 versions as Irvine is 32-bit library.
 
-*   **[UASM](https://github.com/Terraspace/UASM):** A free MASM-compatible assembler. The project is configured to look for `uasm32.exe` in the `uasm257_x86` directory.
+*   **[UASM](https://github.com/Terraspace/UASM):** A free MASM-compatible assembler. The project is configured to look for `uasm32.exe` (or `uasm.exe`)in the `uasm257_x86` directory (or in `msys64/mingw64/bin`).
 *   **[LLVM Project](https://github.com/llvm/llvm-project):** Provides the `lld` linker and.
 *   **[MinGW-w64](https://www.mingw-w64.org/):** Provides C/C++ compilers needed by the toolchain.
 *   **[CMake](https://cmake.org/download/):** The build system generator.
@@ -65,7 +65,7 @@ Here is an example of a correct configuration:
 The `CMakeLists.txt` file in this project is configured to:
 *   Use `uasm32.exe` as the assembler.
 *   Use `lld-link.exe` as the linker.
-*   Generate the necessary debug information (`/Zi8` flag) for LLDB.
+*   Generate the necessary debug information (`-Zi8` flag) for LLDB.
 
 Because the toolchain is set up to use LLDB, CLion's default "Debug" button will automatically launch your application and attach the LLDB debugger, allowing you to set breakpoints, inspect memory, and step through your assembly code just as you would with C++ or other languages.
 
