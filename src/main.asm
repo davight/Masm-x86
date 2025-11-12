@@ -9,22 +9,14 @@ INCLUDE Irvine32.inc
 	nasielString DB "Naslo sa cislo",0
 	nenasielString DB "Nenaslo sa cislo",0
 
-	cisla DW 1,2,3
+	cisla DW 5,-2,3
+	A DB 'a'
 
 .code
 main PROC
 	call Clrscr
 
-	;mov ax,1234
-	;call CisloNaString
-
-	;call ReadString
-	mov edx,OFFSET nacitanaSprava
-	mov ecx, dlzkaSpravy
-	call ReadString ; ulozi String do EDX
-	call StringNaCislo ; ulozi cislo do EAX
-	call NajdiVPostupnosti ; najde cislo EAX v postupnosti 'cisla'
-    ;call WriteInt
+    call NajdiNajmensie
 
 	exit
 
@@ -147,5 +139,43 @@ NajdiVPostupnosti PROC
     ret
 
 NajdiVPostupnosti ENDP
+
+NajdiNajmensie PROC
+    push EAX
+    push EBX
+    push ECX
+    push EDX
+    push ESI
+
+    mov edx, LENGTHOF cisla ; velkost cisel
+
+    mov ax,cisla[0] ; najmensie cislo zatial
+    mov ebx,0  ; najmensi index zatial
+
+    mov esi,0 ; i
+
+    Opakuj:
+        inc esi
+        cmp esi,edx
+        je Koniec
+        mov cx,cisla[esi * 2] ; bikoz je to word (2 bytes)
+        cmp ax,cx
+        jg NajmensieCislo
+        jmp Opakuj
+    NajmensieCislo:
+        mov ax,cx
+        ;mov ebx,esi
+        jmp Opakuj
+    Koniec:
+    movsx eax, ax
+    call WriteInt
+    pop ESI
+    pop EDX
+    pop ECX
+    pop EBX
+    pop EAX
+    ret
+
+NajdiNajmensie ENDP
 
 END main
