@@ -140,6 +140,9 @@ NajdiVPostupnosti PROC
 
 NajdiVPostupnosti ENDP
 
+;
+; Najde v postupnosti 'cisla' najmensie cislo
+;
 NajdiNajmensie PROC
     push EAX
     push EBX
