@@ -11,12 +11,22 @@ INCLUDE Irvine32.inc
 
 	cisla DW 5,-2,3
 	A DB 'a'
+	mnozina DD 0
 
 .code
 main PROC
 	call Clrscr
 
-    call NajdiNajmensie
+    mov ECX,5
+    Opakuj:
+        mov eax, 32
+
+        call DosadDoMnoziny
+        loop Opakuj
+    mov EAX,mnozina
+    call WriteBin
+
+    call PrecitajZMnoziny
 
 	exit
 
@@ -180,5 +190,71 @@ NajdiNajmensie PROC
     ret
 
 NajdiNajmensie ENDP
+
+;
+; Dosadi nahdne cislo od 0 po EAX do mnoziny 'mnozina'
+; @Example:
+; - Vyberie cislo 5
+; - V mnozine na 5. bite nastavi 1
+; - Opakuje 10krat
+;
+DosadDoMnoziny PROC
+    push EBX
+    push ECX
+
+    call RandomRange
+    ;call WriteInt
+    mov EBX,1
+    mov CL,AL
+
+    shl EBX,CL
+    ;mov EAX,EBX
+    or mnozina,EBX
+
+    POP EBX
+    POP ECX
+    ret
+
+DosadDoMnoziny ENDP
+
+;
+; Vypise vsetky cisla z mnoziny 'mnozina'
+; @Example
+; - Mame mnozina 10001
+; - Vypise vsetky indexy bitov, na ktorych je jednotka
+; - T.j 1 a 5
+;
+PrecitajZMnoziny PROC
+    push EAX
+    push EBX
+    push ECX
+    push EDX
+
+    mov EAX, 0 ; dec reprezentacia indexu
+    mov EBX, 1 ; binarna reprezentacia cisla
+    mov ECX, 33
+    Opakuj:
+        dec ECX
+        cmp ECX,0
+        je Koniec
+        ; Iba kuk ci to prechadza cez vsetko
+        inc EAX
+        test EBX, mnozina
+        jnz VypisCislo
+
+        shl EBX, 1
+        jmp Opakuj
+    VypisCislo:
+        call WriteInt
+        shl EBX, 1
+        jmp Opakuj
+    Koniec:
+    pop EDX
+    pop ECX
+    pop EBX
+    pop EAX
+    ret
+
+PrecitajZMnoziny ENDP
 
 END main
