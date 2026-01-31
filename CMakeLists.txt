@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 4.0.2)
-project(Sample_project ASM_MASM)
+project(SOJ ASM_MASM)
 
 find_program(UASM_EXECUTABLE
         NAMES uasm32 uasm
@@ -26,11 +26,13 @@ set(CMAKE_ASM_MASM_LINK_EXECUTABLE "\"${LLD_LINK_EXECUTABLE}\" <LINK_FLAGS> <OBJ
 
 set(CMAKE_EXE_LINKER_FLAGS "/DEBUG /SUBSYSTEM:CONSOLE /MACHINE:X86 /ENTRY:main /SAFESEH:NO")
 
-
-add_executable(Sample_project)
-add_subdirectory(src)
 set(IRVINE_DIR ${CMAKE_SOURCE_DIR}/Irvine32)
-target_include_directories(Sample_project PRIVATE ${IRVINE_DIR})
-target_link_libraries(Sample_project PRIVATE ${IRVINE_DIR}/Irvine32.lib
-        PRIVATE ${IRVINE_DIR}/Kernel32.lib
-        PRIVATE ${IRVINE_DIR}/User32.lib)
+include_directories(${IRVINE_DIR})
+
+set(LIBS
+        ${IRVINE_DIR}/Irvine32.lib
+        ${IRVINE_DIR}/Kernel32.lib
+        ${IRVINE_DIR}/User32.lib
+)
+
+add_subdirectory(src)
